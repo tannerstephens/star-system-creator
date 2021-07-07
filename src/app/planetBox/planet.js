@@ -1,6 +1,6 @@
 import { Sprite, Texture } from 'pixi.js';
 
-export const texture = Texture.from('/assets/planet.svg');
+export const texture = Texture.from('./assets/planet.svg');
 
 class Planet extends Sprite {
   constructor() {
