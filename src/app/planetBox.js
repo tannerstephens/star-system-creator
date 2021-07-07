@@ -1,8 +1,6 @@
-import { Container, Graphics, Rectangle } from 'pixi.js';
+import { Container, Graphics, InteractionManager, Point, Rectangle } from 'pixi.js';
 
 import Planet from './planetBox/planet';
-
-
 
 export const createBoundingRectangle = (width, height) => {
   return (new Graphics())
@@ -18,7 +16,7 @@ class PlanetBox extends Container {
    * @param {Number} height
    * @param {Window} window
    */
-  constructor(width, height, window, sagittaPx) {
+  constructor(width, height, window, sagittaPx, renderer) {
     super();
 
     const coverWidth = Math.floor((window.innerWidth - width) / 2);
@@ -49,9 +47,8 @@ class PlanetBox extends Container {
 
     this.planetContainer = new Container();
 
-    this.planetContainer.addChild(star);
-
     this.boundsContainer.addChild(
+      star,
       this.leftBoundingBox,
       this.rightBoundingBox,
       this.topBoundingBox,
@@ -66,7 +63,17 @@ class PlanetBox extends Container {
     this.interactive = true;
     this.hitArea = new Rectangle(coverWidth, coverHeight, width, height);
 
-    this.on('mousedown', ({data: {global: {x, y}}}) => {
+    this.on('mousedown', (e) => {
+      const {data: {global: {x, y}}} = e;
+
+      const point = new Point(x, y);
+
+      const planetClicked = renderer.plugins.interaction.hitTest(point, this.planetContainer);
+
+      if(planetClicked) {
+        return;
+      }
+
       const planet = new Planet();
       planet.position.set(x, halfHeight);
       this.planetContainer.addChild(planet);

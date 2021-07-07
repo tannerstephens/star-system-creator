@@ -17,7 +17,7 @@ class App extends PIXI.Application {
 
     this.window = window;
 
-    this.planetBox = new PlanetBox(Math.ceil(4.375 * 300), Math.ceil(1.375*300), this.window, 50);
+    this.planetBox = new PlanetBox(Math.ceil(4.375 * 300), Math.ceil(1.375*300), this.window, 50, this.renderer);
 
     this.stage.addChild(this.planetBox);
 

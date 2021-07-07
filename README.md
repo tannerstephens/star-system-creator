@@ -1,6 +1,6 @@
-# yarnTemplate
+# Star System Creator
 
-A fancy template for all your yarn/webpack based javascript needs
+A minimalistic star system map creator for use in various crative projects
 
 ## Getting Started
 
@@ -15,13 +15,13 @@ These instructions will get you a copy of the project up and running on your loc
 Clone the repo down to your machine
 
 ```
-git clone https://github.com/tannerstephens/yarnTemplate
+git clone https://github.com/tannerstephens/star-system-creator
 ```
 
 Install all dependencies
 
 ```
-yarn install
+yarn
 ```
 
 Run the dev server
@@ -31,10 +31,6 @@ yarn start
 ```
 
 Visit [localhost:3000](http://localhost:3000) and see it running!
-
-### Post-Installation
-
-Setup projectSettings.js with the appropriate site title and repo url
 
 ## Deployment
 
@@ -49,6 +45,7 @@ See the dist/ folder for static output files.
 ## Built With
 
 * [webpack](https://webpack.js.org/) - Bundling
+* [Pixi.js](https://www.pixijs.com/) - Visual Engine
 
 ## Authors
 

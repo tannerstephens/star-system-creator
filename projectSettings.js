@@ -1,4 +1,4 @@
 module.exports = {
-  title: 'yarnTemplate',
-  repo: ''
+  title: 'Star System Creator',
+  repo: 'https://github.com/tannerstephens/star-system-creator'
 };
