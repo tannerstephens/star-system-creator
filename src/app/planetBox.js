@@ -26,21 +26,21 @@ class PlanetBox extends Container {
 
     this.gui = gui;
 
-    const coverWidth = Math.floor((window.innerWidth - width) / 2);
-    const coverHeight = Math.floor((window.innerHeight - height) / 2);
+    this.coverWidth = Math.floor((window.innerWidth - width) / 2);
+    this.coverHeight = Math.floor((window.innerHeight - height) / 2);
 
     const halfHeight = Math.floor(window.innerHeight / 2);
 
     const starRadius = (Math.pow(sagittaPx, 2) + Math.pow(height/2, 2)) / (2*sagittaPx);
 
-    this.leftBoundingBox = createBoundingRectangle(coverWidth, window.innerHeight);
-    this.topBoundingBox = createBoundingRectangle(window.innerWidth, coverHeight);
+    this.leftBoundingBox = createBoundingRectangle(this.coverWidth, window.innerHeight);
+    this.topBoundingBox = createBoundingRectangle(window.innerWidth, this.coverHeight);
     this.rightBoundingBox = this.leftBoundingBox.clone();
-    this.rightBoundingBox.position.x = window.innerWidth - coverWidth;
+    this.rightBoundingBox.position.x = window.innerWidth - this.coverWidth;
     this.bottomBoundingBox = this.topBoundingBox.clone();
-    this.bottomBoundingBox.position.y = window.innerHeight - coverHeight;
+    this.bottomBoundingBox.position.y = window.innerHeight - this.coverHeight;
 
-    this.borderRectangle = (new Graphics()).lineStyle(3, 0x000000).drawRect(coverWidth, coverHeight, width, height);
+    this.borderRectangle = (new Graphics()).lineStyle(3, 0x000000).drawRect(this.coverWidth, this.coverHeight, width, height);
     this.centralAxis = (new Graphics()).lineStyle(4, 0xaaaaaa).moveTo(0, halfHeight).lineTo(window.innerWidth, halfHeight);
 
     this.boundsContainer = new Container();
@@ -48,7 +48,7 @@ class PlanetBox extends Container {
     const star = new Star(starRadius, gui);
 
     star.position.y = halfHeight;
-    star.position.x = coverWidth + sagittaPx - starRadius;
+    star.position.x = this.coverWidth + sagittaPx - starRadius;
 
     this.planetContainer = new Container();
 
@@ -66,7 +66,7 @@ class PlanetBox extends Container {
     this.addChild(this.boundsContainer);
 
     this.interactive = true;
-    this.hitArea = new Rectangle(coverWidth, coverHeight, width, height);
+    this.hitArea = new Rectangle(this.coverWidth, this.coverHeight, width, height);
 
     this.on('mousedown', (e) => {
       const {data: {global: {x, y}}} = e;
