@@ -1,28 +1,43 @@
 import { Sprite } from 'pixi.js';
-import { GUI } from 'dat.gui';
-import { planetTexture } from './constants';
+import { planetTexture } from '../constants';
+
+import {GUI} from 'dat.gui';
+
+Number.prototype.mod = function(n) {
+  return ((this%n)+n)%n;
+};
 
 
-class Planet extends Sprite {
+class Moon extends Sprite {
   /**
    *
+   * @param {*} x
+   * @param {*} y
+   * @param {*} r
+   * @param {*} theta
+   * @param {*} scale
    * @param {GUI} gui
    */
-  constructor(gui) {
+  constructor(x, y, r, theta, scale, gui) {
     super(planetTexture);
 
     this.gui = gui;
 
+    this.px = x;
+    this.py = y;
+    this.r = r;
+    this.theta = theta;
 
-    this.scale.set(0.5);
-    this.anchor.set(0.5);
-    this.planetScale = this.scale.x;
+    this.scale.set(scale);
     this.tint = 0x000000;
+    this.anchor.set(0.5);
+
+    this.wheelScale = 0.01;
+    this.minScale = 0.01;
+
+    this.moonScale = this.scale.x;
+
     this.interactive = true;
-
-    this.wheelScale = 0.05;
-
-    this.minScale = 0.02;
 
     this.color = {
       r: 0,
@@ -30,21 +45,23 @@ class Planet extends Sprite {
       b: 0
     };
 
-    this.dragging = false;
-
     this.on('wheel', this._wheel)
       .on('mousedown', this._dragStart)
       .on('mouseup', this._dragEnd)
       .on('mouseupoutside', this._dragEnd)
       .on('mousemove', this._mouseMove);
 
-    gui.add(this.position, 'x');
-    gui.add(this, 'planetScale', this.minScale).onChange(() => this._updateScale()).step(0.01);
+    this._updatePosition();
+
+    gui.add(this, 'r').onChange(() => this._updatePosition()).step(0.1);
+    gui.add(this, 'theta', 0, Math.PI * 2).onChange(() => this._updatePosition()).step(0.01);
+    gui.add(this, 'moonScale', this.minScale).onChange(() => this._updateScale()).step(0.01);
 
     const colorFolder = gui.addFolder('Color');
     colorFolder.add(this.color, 'r', 0, 255).onChange(() => this._updateTint());
     colorFolder.add(this.color, 'g', 0, 255).onChange(() => this._updateTint());
     colorFolder.add(this.color, 'b', 0, 255).onChange(() => this._updateTint());
+
   }
 
   _updateTint() {
@@ -52,26 +69,50 @@ class Planet extends Sprite {
   }
 
   _updateScale() {
-    this.scale.set(this.planetScale);
+    this.scale.set(this.moonScale);
+  }
+
+  _updatePosition() {
+    const x = this.r * Math.cos(this.theta);
+    const y = this.r * Math.sin(this.theta);
+
+
+    this.position.set(x + this.px, y + this.py);
+  }
+
+  updateRoot(x) {
+    this.px = x;
+
+    this._updatePosition();
   }
 
   _dragStart(e) {
     this.dragging = true;
     this.alpha = 0.75;
     this.data = e.data;
+    this.oldPos = e.data.getLocalPosition(this.parent);
   }
 
   _dragEnd() {
     this.dragging = false;
     this.alpha = 1;
     this.data = null;
+    this.oldPos = null;
   }
 
   _mouseMove() {
     if (this.dragging)
     {
       const newPosition = this.data.getLocalPosition(this.parent);
-      this.position.x = newPosition.x;
+
+      const dx = newPosition.x - this.oldPos.x;
+
+      this.oldPos = newPosition;
+
+      this.theta += dx * 0.0174533;
+
+      this.theta = this.theta.mod(6.28);
+      this._updatePosition();
       this.gui.updateDisplay();
     }
   }
@@ -82,7 +123,7 @@ class Planet extends Sprite {
     } else {
       this._scaleUp();
     }
-    this.planetScale = this.scale.x;
+    this.moonScale = this.scale.x;
     this.gui.updateDisplay();
   }
 
@@ -101,4 +142,4 @@ class Planet extends Sprite {
   }
 }
 
-export default Planet;
+export default Moon;

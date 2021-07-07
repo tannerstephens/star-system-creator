@@ -1,7 +1,7 @@
 import { Container, Graphics, Point, Rectangle, Renderer } from 'pixi.js';
 import { GUI } from 'dat.gui';
 
-import Planet from './planetBox/planet';
+import PlanetContainer from './planetBox/planetContainer';
 import Star from './planetBox/star';
 
 export const createBoundingRectangle = (width, height) => {
@@ -80,9 +80,7 @@ class PlanetBox extends Container {
       }
 
       const planetFolder = this.gui.addFolder(`Planet ${this.planetContainer.children.length + 1}`);
-      const planet = new Planet(planetFolder);
-      planet.position.set(x, halfHeight);
-      planetFolder.updateDisplay();
+      const planet = new PlanetContainer(x, halfHeight, planetFolder, this.gui);
       this.planetContainer.addChild(planet);
     });
   }
