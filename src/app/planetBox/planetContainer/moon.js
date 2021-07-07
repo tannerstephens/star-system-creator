@@ -76,8 +76,15 @@ class Moon extends Sprite {
     const x = this.r * Math.cos(this.theta);
     const y = this.r * Math.sin(this.theta);
 
-
     this.position.set(x + this.px, y + this.py);
+  }
+
+  _updatePolarCoordinates() {
+    const x = this.position.x - this.px;
+    const y = this.position.y - this.py;
+
+    this.r = Math.sqrt(x**2 + y**2);
+    this.theta = Math.atan2(y, x).mod(6.28);
   }
 
   updateRoot(x) {
@@ -90,14 +97,12 @@ class Moon extends Sprite {
     this.dragging = true;
     this.alpha = 0.75;
     this.data = e.data;
-    this.oldPos = e.data.getLocalPosition(this.parent);
   }
 
   _dragEnd() {
     this.dragging = false;
     this.alpha = 1;
     this.data = null;
-    this.oldPos = null;
   }
 
   _mouseMove() {
@@ -105,14 +110,11 @@ class Moon extends Sprite {
     {
       const newPosition = this.data.getLocalPosition(this.parent);
 
-      const dx = newPosition.x - this.oldPos.x;
-
       this.oldPos = newPosition;
 
-      this.theta += dx * 0.0174533;
+      this.position.set(newPosition.x, newPosition.y);
 
-      this.theta = this.theta.mod(6.28);
-      this._updatePosition();
+      this._updatePolarCoordinates();
       this.gui.updateDisplay();
     }
   }

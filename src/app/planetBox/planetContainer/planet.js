@@ -56,19 +56,30 @@ class Planet extends Sprite {
   }
 
   _updateScale() {
+    const planetRadius = this.width / 2;
     this.scale.set(this.planetScale);
+    const newPlanetRadius = this.width / 2;
+
+    const dr = newPlanetRadius - planetRadius;
+
+    this.parent.moons.forEach(moon => {
+      moon.r += dr;
+      moon._updatePosition();
+    });
   }
 
   _dragStart(e) {
     this.dragging = true;
     this.alpha = 0.75;
     this.data = e.data;
+    this.parent.moons.forEach(moon => moon.alpha = 0.75);
   }
 
   _dragEnd() {
     this.dragging = false;
     this.alpha = 1;
     this.data = null;
+    this.parent.moons.forEach(moon => moon.alpha = 1);
   }
 
   _mouseMove() {
@@ -92,17 +103,39 @@ class Planet extends Sprite {
   }
 
   _scaleDown() {
+    const planetRadius = this.width / 2;
+
     this.scale.x -= this.wheelScale;
     this.scale.y -= this.wheelScale;
 
     if(this.scale.x < this.minScale) {
       this.scale.set(this.minScale);
     }
+
+    const newPlanetRadius = this.width / 2;
+
+    const dr = newPlanetRadius - planetRadius;
+
+    this.parent.moons.forEach(moon => {
+      moon.r += dr;
+      moon._updatePosition();
+    });
   }
 
   _scaleUp() {
+    const planetRadius = this.width / 2;
+
     this.scale.x += this.wheelScale;
     this.scale.y += this.wheelScale;
+
+    const newPlanetRadius = this.width / 2;
+
+    const dr = newPlanetRadius - planetRadius;
+
+    this.parent.moons.forEach(moon => {
+      moon.r += dr;
+      moon._updatePosition();
+    });
   }
 }
 
