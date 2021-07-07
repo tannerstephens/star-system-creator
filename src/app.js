@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import * as dat from 'dat.gui';
 
 import PlanetBox from './app/planetBox';
 import registerWheelEvent from './app/mousewheelEvent';
@@ -15,9 +16,12 @@ class App extends PIXI.Application {
       antialias: true
     });
 
+    this.gui = new dat.GUI();
+    this.gui.domElement.id = 'gui';
+
     this.window = window;
 
-    this.planetBox = new PlanetBox(Math.ceil(4.375 * 300), Math.ceil(1.375*300), this.window, 50, this.renderer);
+    this.planetBox = new PlanetBox(Math.ceil(4.375 * 300), Math.ceil(1.375*300), this.window, 50, this.renderer, this.gui);
 
     this.stage.addChild(this.planetBox);
 

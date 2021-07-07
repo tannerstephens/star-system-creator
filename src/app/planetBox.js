@@ -1,6 +1,8 @@
-import { Container, Graphics, InteractionManager, Point, Rectangle } from 'pixi.js';
+import { Container, Graphics, Point, Rectangle, Renderer } from 'pixi.js';
+import { GUI } from 'dat.gui';
 
 import Planet from './planetBox/planet';
+import Star from './planetBox/star';
 
 export const createBoundingRectangle = (width, height) => {
   return (new Graphics())
@@ -15,9 +17,14 @@ class PlanetBox extends Container {
    * @param {Number} width
    * @param {Number} height
    * @param {Window} window
+   * @param {Number} sagittaPx
+   * @param {Renderer} renderer
+   * @param {GUI} gui
    */
-  constructor(width, height, window, sagittaPx, renderer) {
+  constructor(width, height, window, sagittaPx, renderer, gui) {
     super();
+
+    this.gui = gui;
 
     const coverWidth = Math.floor((window.innerWidth - width) / 2);
     const coverHeight = Math.floor((window.innerHeight - height) / 2);
@@ -38,9 +45,7 @@ class PlanetBox extends Container {
 
     this.boundsContainer = new Container();
 
-    const star = (new Graphics())
-      .beginFill(0x000000)
-      .drawCircle(0,0,starRadius);
+    const star = new Star(starRadius, gui);
 
     star.position.y = halfHeight;
     star.position.x = coverWidth + sagittaPx - starRadius;
@@ -74,8 +79,10 @@ class PlanetBox extends Container {
         return;
       }
 
-      const planet = new Planet();
+      const planetFolder = this.gui.addFolder(`Planet ${this.planetContainer.children.length + 1}`);
+      const planet = new Planet(planetFolder);
       planet.position.set(x, halfHeight);
+      planetFolder.updateDisplay();
       this.planetContainer.addChild(planet);
     });
   }
