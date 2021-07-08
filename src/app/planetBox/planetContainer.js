@@ -3,6 +3,7 @@ import { GUI } from 'dat.gui';
 
 import Planet from './planetContainer/planet';
 import Moon from './planetContainer/moon';
+import Ring from './planetContainer/ring';
 
 
 class PlanetContainer extends Container {
@@ -15,6 +16,9 @@ class PlanetContainer extends Container {
   constructor(x ,y, gui) {
     super();
 
+    this.ringsContainer = new Container();
+    this.addChild(this.ringsContainer);
+
     this.gui = gui;
 
     this.px = x;
@@ -24,12 +28,16 @@ class PlanetContainer extends Container {
     this.addChild(this.planet);
 
     this.moonsFolder = this.gui.addFolder('Moons');
+    this.ringsFolder = this.gui.addFolder('Rings');
 
     this.moonIndex = 1;
+    this.ringIndex = 1;
 
     this.gui.add({'Add Moon': () => this._addMoon()}, 'Add Moon');
+    this.gui.add({'Add Ring': () => this._addRing()}, 'Add Ring');
 
     this.moons = [];
+    this.rings = [];
   }
 
   _updateX(x) {
@@ -38,6 +46,14 @@ class PlanetContainer extends Container {
     this.moons.forEach(moon => {
       moon.updateRoot(this.px);
     });
+
+    this.rings.forEach(ring => {
+      ring.updateRoot(this.px);
+    });
+  }
+
+  _orderRings() {
+    this.ringsContainer.children.sort((a, b) => b.r > a.r);
   }
 
   _addMoon() {
@@ -59,7 +75,28 @@ class PlanetContainer extends Container {
     this.addChild(moon);
 
     this.moons.push(moon);
+  }
 
+  _addRing() {
+    const r = (this.planet.width / 2) + 100*Math.random() + 20;
+    const width = 3;
+
+    const ringFolder = this.ringsFolder.addFolder(`Ring ${this.ringIndex}`);
+    this.ringIndex += 1;
+
+    const ring = new Ring(this.px, this.py, r, width, ringFolder, this);
+
+    ringFolder.add({'Delete': () => {
+      this.removeChild(ring);
+      this.ringsFolder.removeFolder(ringFolder);
+      this.rings.splice(this.rings.indexOf(ring), 1);
+    }}, 'Delete');
+
+    this.ringsContainer.addChild(ring);
+
+    this._orderRings();
+
+    this.rings.push(ring);
   }
 }
 

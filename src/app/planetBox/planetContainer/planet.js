@@ -66,6 +66,13 @@ class Planet extends Sprite {
       moon.r += dr;
       moon._updatePosition();
     });
+
+    console.log(this.parent.rings)
+
+    this.parent.rings.forEach(ring => {
+      ring.r += dr;
+      ring._updateGraphics();
+    });
   }
 
   _dragStart(e) {
@@ -73,6 +80,7 @@ class Planet extends Sprite {
     this.alpha = 0.75;
     this.data = e.data;
     this.parent.moons.forEach(moon => moon.alpha = 0.75);
+    this.parent.rings.forEach(ring => ring.alpha = 0.75);
   }
 
   _dragEnd() {
@@ -80,6 +88,7 @@ class Planet extends Sprite {
     this.alpha = 1;
     this.data = null;
     this.parent.moons.forEach(moon => moon.alpha = 1);
+    this.parent.rings.forEach(ring => ring.alpha = 1);
   }
 
   _mouseMove() {
@@ -120,6 +129,11 @@ class Planet extends Sprite {
       moon.r += dr;
       moon._updatePosition();
     });
+
+    this.parent.rings.forEach(ring => {
+      ring.r += dr;
+      ring._updateGraphics();
+    });
   }
 
   _scaleUp() {
@@ -135,6 +149,11 @@ class Planet extends Sprite {
     this.parent.moons.forEach(moon => {
       moon.r += dr;
       moon._updatePosition();
+    });
+
+    this.parent.rings.forEach(ring => {
+      ring.r += dr;
+      ring._updateGraphics();
     });
   }
 }
