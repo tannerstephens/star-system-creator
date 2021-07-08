@@ -28,8 +28,19 @@ class Ring extends Container {
 
     this.ringGraphics = null;
 
-    this.gui.add(this, 'thickness').onChange(() => this._updateGraphics()).step(0.1);
+    this.color = {
+      r: 0,
+      g: 0,
+      b: 0
+    };
+
+    this.gui.add(this, 'thickness', this.minScale).onChange(() => this._updateGraphics()).step(0.1);
     this.gui.add(this, 'r').onChange(() => this._updateGraphics()).step(0.1);
+
+    const colorFolder = gui.addFolder('Color');
+    colorFolder.add(this.color, 'r', 0, 255).onChange(() => this._updateTint());
+    colorFolder.add(this.color, 'g', 0, 255).onChange(() => this._updateTint());
+    colorFolder.add(this.color, 'b', 0, 255).onChange(() => this._updateTint());
 
     this._updateGraphics();
   }
@@ -40,7 +51,7 @@ class Ring extends Container {
       .lineStyle(this.thickness, 0xffffff)
       .drawCircle(this.px, this.py, this.r);
 
-    this.ringGraphics.tint = 0x000000;
+    this._updateTint();
 
     this.ringGraphics.interactive = true;
     this.ringGraphics.hitArea = new Circle(this.px, this.py, this.r + 2)
@@ -50,6 +61,10 @@ class Ring extends Container {
     this._addListeners();
 
     this.pc._orderRings();
+  }
+
+  _updateTint() {
+    this.ringGraphics.tint = (this.color.r << 16) + (this.color.g << 8) + this.color.b;
   }
 
   _addListeners() {

@@ -87,7 +87,7 @@ class PlanetContainer extends Container {
     const ring = new Ring(this.px, this.py, r, width, ringFolder, this);
 
     ringFolder.add({'Delete': () => {
-      this.removeChild(ring);
+      this.ringsContainer.removeChild(ring);
       this.ringsFolder.removeFolder(ringFolder);
       this.rings.splice(this.rings.indexOf(ring), 1);
     }}, 'Delete');
