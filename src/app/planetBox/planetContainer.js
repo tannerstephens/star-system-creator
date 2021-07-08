@@ -12,12 +12,10 @@ class PlanetContainer extends Container {
    * @param {Number} y
    * @param {GUI} gui
    */
-  constructor(x ,y, gui, parentGui) {
+  constructor(x ,y, gui) {
     super();
 
     this.gui = gui;
-
-    this.parentGui = parentGui
 
     this.px = x;
     this.py = y;
@@ -25,8 +23,11 @@ class PlanetContainer extends Container {
     this.planet = new Planet(x, y, gui);
     this.addChild(this.planet);
 
+    this.moonsFolder = this.gui.addFolder('Moons');
+
+    this.moonIndex = 1;
+
     this.gui.add({'Add Moon': () => this._addMoon()}, 'Add Moon');
-    this.gui.add({'Delete': () => this._delete()}, 'Delete');
 
     this.moons = [];
   }
@@ -44,25 +45,21 @@ class PlanetContainer extends Container {
     const theta = Math.PI * 2 * Math.random();
     const scale = 0.05 * ((Math.random() /2) + 0.5);
 
-    const moonFolder = this.gui.addFolder(`Moon ${this.moons.length + 1}`);
+    const moonFolder = this.moonsFolder.addFolder(`Moon ${this.moonIndex}`);
+    this.moonIndex += 1;
 
     const moon = new Moon(this.px, this.py, r, theta, scale, moonFolder);
+
+    moonFolder.add({'Delete': () => {
+      this.removeChild(moon);
+      this.moonsFolder.removeFolder(moonFolder);
+      this.moons.splice(this.moons.indexOf(moon), 1);
+    }}, 'Delete');
 
     this.addChild(moon);
 
     this.moons.push(moon);
-  }
 
-  _delete() {
-    const confirmation = confirm("Are you sure you want to delete this?");
-
-    if(confirmation) {
-      this.removeChildren();
-
-      this.parentGui.removeFolder(this.gui);
-
-      this.parent.removeChild(this);
-    }
   }
 }
 

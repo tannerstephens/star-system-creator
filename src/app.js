@@ -24,15 +24,30 @@ class App extends PIXI.Application {
 
     this.window = window;
 
+    this.color = {
+      r: 0xff,
+      g: 0xfd,
+      b: 0xf5
+    };
+
     const mapGui = this.gui.addFolder('Map');
 
     this.planetBox = new PlanetBox(this.pbWidth, this.pbHeight, this.window, 50, this.renderer, mapGui);
+
+    this.backgroundGui = this.gui.addFolder('Background Color');
+    this.backgroundGui.add(this.color, 'r', 0, 255).onChange(() => this._updateBackgroundColor());
+    this.backgroundGui.add(this.color, 'g', 0, 255).onChange(() => this._updateBackgroundColor());
+    this.backgroundGui.add(this.color, 'b', 0, 255).onChange(() => this._updateBackgroundColor());
 
     this.stage.addChild(this.planetBox);
 
     registerWheelEvent(this);
 
     this.gui.add(this, 'export');
+  }
+
+  _updateBackgroundColor() {
+    this.renderer.backgroundColor = (this.color.r << 16) + (this.color.g << 8) + this.color.b;
   }
 
   /**
