@@ -8,15 +8,21 @@
     "@babel/preset-env": "^7.8.4",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^5.2.6",
     "html-webpack-plugin": "^3.2.0",
+    "postcss-loader": "^4.3.0",
+    "postcss-prefixer": "^2.1.3",
+    "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^2.3.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "dat.gui": "^0.7.7",
-    "pixi.js": "^6.0.4"
+    "@simonwep/pickr": "^1.8.1",
+    "@svgdotjs/svg.js": "^3.1.1",
+    "bulma": "^0.9.3",
+    "dat.gui": "^0.7.7"
   },
   "scripts": {
     "production": "webpack --mode production --config webpack.config.prod.js",

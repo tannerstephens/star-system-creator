@@ -45,7 +45,11 @@ See the dist/ folder for static output files.
 ## Built With
 
 * [webpack](https://webpack.js.org/) - Bundling
-* [Pixi.js](https://www.pixijs.com/) - Visual Engine
+* [SVG.js](https://svgjs.dev/docs/3.0/) - Visual Engine
+* [dat.GUI](https://github.com/dataarts/dat.gui) - Control Panel
+* [Bulma](https://bulma.io/) - CSS Framework
+* [DinosoftLabs](https://www.flaticon.com/authors/dinosoftlabs) | [Flaticon](https://www.flaticon.com/) - Favicon
+* [Github Corners](http://tholman.com/github-corners/) - Cute github corner link
 
 ## Authors
 
@@ -57,4 +61,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* [Github Corners](http://tholman.com/github-corners/) - For the cute corner URL link.
+* [/u/koboldstyle](https://www.reddit.com/r/SWN/comments/cp4bkq/easy_solar_system_map_creator/ewp61ca/) - Visual style inspiration

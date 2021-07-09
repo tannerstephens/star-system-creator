@@ -1,8 +1,10 @@
-import App from './app';
+import 'bulma/css/bulma.min.css';
+import './styles/index.css';
+
+import StarMap from './StarMap';
 
 document.addEventListener('DOMContentLoaded', () => {
   const rootElement = document.getElementById('root');
 
-  const app = new App(window);
-  app.display(rootElement, document);
+  new StarMap(rootElement, window);
 })
