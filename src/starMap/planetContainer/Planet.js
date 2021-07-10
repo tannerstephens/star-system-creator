@@ -60,6 +60,8 @@ class Planet extends ResizableCircle {
       .on('mouseupoutside', e => this._mouseUp(e))
       .on('mousemoveglobal', e => this._mouseMove(e))
       .on('dblclick', () => targetFolder(this.gui));
+
+    this.css('cursor', 'pointer');
   }
 
   _mouseDown(e) {

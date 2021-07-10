@@ -49,7 +49,7 @@ class Ring extends Path {
     this.css('fill', 'none');
 
     // GUI Setup
-    gui.add(this, 'r').onChange(() => this._drawRing());
+    gui.add(this, 'r', 1).onChange(() => this._drawRing());
     gui.add(this, 'ringWidth', 1).onChange(() => this._drawRing()).step(0.1);
 
     const colorFolder = gui.addFolder('Color');
@@ -66,6 +66,8 @@ class Ring extends Path {
       .on('wheel', e => this._onWheel(e))
       .on('mousemoveglobal', e => this._mouseMove(e))
       .on('dblclick', () => targetFolder(this.gui));
+
+    this.css('cursor', 'pointer');
   }
 
   _onWheel({deltaY}) {

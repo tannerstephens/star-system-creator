@@ -43,6 +43,8 @@ class Star extends Circle {
           return;
         }
       });
+
+    this.css('cursor', 'pointer');
   }
 
   _updateColor() {

@@ -54,7 +54,9 @@ class Moon extends ResizableCircle {
       .on('mouseup', e => this._mouseUp(e))
       .on('mouseupoutside', e => this._mouseUp(e))
       .on('mousemoveglobal', e => this._mouseMove(e))
-      .on('dblclick', () => targetFolder(this.gui));;
+      .on('dblclick', () => targetFolder(this.gui));
+
+    this.css('cursor', 'pointer');
   }
 
   _updateRadius() {
