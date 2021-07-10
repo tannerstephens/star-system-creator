@@ -50,7 +50,7 @@ class Ring extends Path {
 
     // GUI Setup
     gui.add(this, 'r').onChange(() => this._drawRing());
-    gui.add(this, 'ringWidth', 1).onChange(() => this._drawRing()),step(0.1);
+    gui.add(this, 'ringWidth', 1).onChange(() => this._drawRing()).step(0.1);
 
     const colorFolder = gui.addFolder('Color');
 
