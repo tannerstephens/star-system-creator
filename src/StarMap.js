@@ -1,5 +1,6 @@
 import * as dat from 'dat.gui';
 
+import AsteroidBelt from './starMap/AsteroidBelt';
 import Axis from './starMap/Axis';
 import PlanetContainer from './starMap/PlanetContainer';
 import Star from './starMap/Star';
@@ -38,12 +39,17 @@ class StarMap extends Svg {
     this.addTo(rootElement);
 
     this.window = window;
+    this.belts = [];
+    this.beltNum = 1;
 
     this._adjustCanvasSize();
 
 
     const starFolder = starSystemFolder.addFolder('Star');
     const planetsFolder = starSystemFolder.addFolder('Planets');
+
+    this.beltsFolder = starSystemFolder.addFolder('Asteroid Belts');
+    this.beltsFolder.add({'Add Belt': () => this._addBelt()}, 'Add Belt');
 
     this.axis = new Axis(this, axisFolder);
     this.PlanetContainer = new PlanetContainer(this, planetsFolder);
@@ -74,6 +80,22 @@ class StarMap extends Svg {
 
   _updateBackgroundColor() {
     this.css('background-color', `rgb(${this.backgroundColor.r}, ${this.backgroundColor.g}, ${this.backgroundColor.b})`);
+  }
+
+  _addBelt() {
+    const x = this.width() * Math.random();
+
+    const beltFolder = this.beltsFolder.addFolder(`Asteroid Belt ${this.beltNum}`);
+    this.beltNum += 1;
+
+    const asteroidBelt = new AsteroidBelt(this, beltFolder, x, this.height() / 2, 30);
+
+    beltFolder.add({'Delete': () => {
+      asteroidBelt.remove();
+      this.beltsFolder.removeFolder(beltFolder);
+    }}, 'Delete');
+
+    this.belts.push(asteroidBelt);
   }
 
   exportSVG() {

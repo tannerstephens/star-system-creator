@@ -1,15 +1,8 @@
+import { Path, Svg } from "@svgdotjs/svg.js";
+
 import { GUI } from "dat.gui";
 import { colorToHex } from '../../colorToHex';
-import { deleteFolder } from "../deleteFolder";
 import { targetFolder } from '../../targetFolder';
-
-const { Path, Svg } = require("@svgdotjs/svg.js");
-
-
-const createRingPath = radius => {
-  return `M0,${radius}a${radius},${radius} 0 1,0 ${radius*2},0a${radius},${radius} 0 1,0 -${radius*2},0`
-};
-
 
 class Ring extends Path {
   /**
@@ -83,8 +76,12 @@ class Ring extends Path {
     this.gui.updateDisplay();
   }
 
+  _createRingPath() {
+    return `M0,${this.r}a${this.r},${this.r} 0 1,0 ${this.r*2},0a${this.r},${this.r} 0 1,0 -${this.r*2},0`
+  };
+
   _drawRing() {
-    this.plot(createRingPath(this.r));
+    this.plot(this._createRingPath());
     this.stroke({width: this.ringWidth, color: colorToHex(this.color)});
     this.center(this.centerPos.x, this.centerPos.y);
   }

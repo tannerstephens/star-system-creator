@@ -1,7 +1,6 @@
 import { GUI } from "dat.gui";
 import ResizableCircle from "../ResizableCircle";
 import { Svg } from "@svgdotjs/svg.js";
-import { deleteFolder } from "../deleteFolder";
 import { targetFolder } from '../../targetFolder';
 
 Number.prototype.mod = function(n) {
