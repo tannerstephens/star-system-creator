@@ -32,7 +32,7 @@ class AsteroidBelt {
     this.passableMove = e => this._mouseMove(e);
     this.passableWheel = e => this._onWheel(e);
 
-    this.gui.add({'Regenerate': () => this._reseed()}, 'Regenerate');
+    this.gui.add({'Random Seed': () => this._reseed()}, 'Random Seed');
     this.gui.add(this, 'numAsteroids', 1).onChange(() => this._regenerate());
     this.gui.add(this, 'size', 1).onChange(() => this._regenerate());
     this.gui.add(this, 'width', 1).onChange(() => this._regenerate());
