@@ -22,7 +22,8 @@
     "@simonwep/pickr": "^1.8.1",
     "@svgdotjs/svg.js": "^3.1.1",
     "bulma": "^0.9.3",
-    "dat.gui": "^0.7.7"
+    "dat.gui": "^0.7.7",
+    "seedrandom": "^3.0.5"
   },
   "scripts": {
     "production": "webpack --mode production --config webpack.config.prod.js",

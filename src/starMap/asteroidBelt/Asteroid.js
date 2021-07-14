@@ -9,18 +9,20 @@ class Asteroid extends Polygon {
    * @param {Number} x
    * @param {Number} y
    */
-  constructor(draw, x, y, scaleAmount, dragging, downFn, upFn, moveFn, wheelFn) {
+  constructor(draw, x, y, rng, scaleAmount, dragging, downFn, upFn, moveFn, wheelFn) {
     super();
     this.draw = draw;
     this.centerPos = {x, y};
     this.color = { r:0, g:0, b:0 };
     this.scaleAmount = scaleAmount;
+    this.rng = rng;
 
     const points = this._generatePolygonPoints();
 
     this.plot(points);
     this.addTo(draw);
     this.size(scaleAmount);
+
 
     // Event Listeners
     this
@@ -41,14 +43,14 @@ class Asteroid extends Polygon {
     let theta = 0;
 
     while(theta < 6.28) {
-      const r = (Math.random() * 3) + 5;
+      const r = (this.rng() * 3) + 5;
 
       const x = r * Math.cos(theta);
       const y = r * Math.sin(theta);
 
       points.push([x + this.centerPos.x, y + this.centerPos.y]);
 
-      theta += (Math.random() * 0.8) + 0.2;
+      theta += (this.rng() * 0.8) + 0.2;
     }
 
     return points;

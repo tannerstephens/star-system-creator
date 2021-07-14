@@ -1,3 +1,5 @@
+import * as seedrandom from 'seedrandom';
+
 import Asteroid from "./asteroidBelt/Asteroid";
 import { GUI } from "dat.gui";
 import { Svg } from "@svgdotjs/svg.js";
@@ -23,17 +25,19 @@ class AsteroidBelt {
     this.color = { r:0, g:0, b:0 };
     this.scale = 16;
     this.scaleStep = 0.5;
+    this.seed = Math.random().toString(36).substring(7);
 
     this.passableDown = e => this._mouseDown(e);
     this.passableUp = e => this._mouseUp(e);
     this.passableMove = e => this._mouseMove(e);
     this.passableWheel = e => this._onWheel(e);
 
-    this.gui.add({'Regenerate': () => this._regenerate()}, 'Regenerate');
+    this.gui.add({'Regenerate': () => this._reseed()}, 'Regenerate');
     this.gui.add(this, 'numAsteroids', 1).onChange(() => this._regenerate());
     this.gui.add(this, 'size', 1).onChange(() => this._regenerate());
     this.gui.add(this, 'width', 1).onChange(() => this._regenerate());
     this.gui.add(this, 'scale', 1).onChange(() => this.asteroids.forEach(asteroid => asteroid.size(this.scale))).step(0.1);
+    this.gui.add(this, 'seed').onChange(() => this._regenerate());
 
     const colorFolder = gui.addFolder('Color');
 
@@ -59,17 +63,26 @@ class AsteroidBelt {
     this.asteroids.forEach(asteroid => asteroid.updateColor(this.color));
   }
 
+  _reseed() {
+    this.seed = Math.random().toString(36).substring(7);
+    this.gui.updateDisplay();
+
+    this._regenerate();
+  }
+
   _regenerate() {
     this._deleteAsteroids();
     this._createAsteroids();
   }
 
   _createAsteroids() {
-    for(let i =0; i < this.numAsteroids; i++) {
-      const x = this.centerPos.x + (Math.random() - 0.5) * this.width;
-      const y = this.centerPos.y + (Math.random() - 0.5) * this.size;
+    const rng = seedrandom(this.seed);
 
-      const asteroid = new Asteroid(this.draw, x, y, this.scale, this.dragging, this.passableDown, this.passableUp, this.passableMove, this.passableWheel);
+    for(let i =0; i < this.numAsteroids; i++) {
+      const x = this.centerPos.x + (rng() - 0.5) * this.width;
+      const y = this.centerPos.y + (rng() - 0.5) * this.size;
+
+      const asteroid = new Asteroid(this.draw, x, y, rng, this.scale, this.dragging, this.passableDown, this.passableUp, this.passableMove, this.passableWheel);
 
       this.asteroids.push(asteroid);
     }
